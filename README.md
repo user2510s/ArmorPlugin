@@ -25,7 +25,7 @@ Ideal para servidores de **RPG**, **PvP estético** ou qualquer ambiente onde a 
 | `/mostrar`             | Mostra toda a armadura                        |
 | `/mostrar <parte>`     | Mostra uma parte específica                   |
 
-**Partes válidas:** `capacete`, `peitoral`, `calça`, `bota`, `tudo`
+**Partes válidas:** `capa`, `peito`, `calça`, `bota`, `tudo`
 
 ---
 
