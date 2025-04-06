@@ -13,15 +13,17 @@ public class HideCommand implements CommandExecutor {
 
     private final Map<UUID, Set<EnumWrappers.ItemSlot>> escondidas;
     private final JavaPlugin plugin;
+    private final DadosManager dadosManager;
 
-    public HideCommand(Map<UUID, Set<EnumWrappers.ItemSlot>> escondidas, JavaPlugin plugin) {
+    public HideCommand(Map<UUID, Set<EnumWrappers.ItemSlot>> escondidas, JavaPlugin plugin, DadosManager dadosManager) {
         this.escondidas = escondidas;
         this.plugin = plugin;
+        this.dadosManager = dadosManager;
     }
 
     private EnumWrappers.ItemSlot getSlot(String arg) {
         return switch (arg.toLowerCase()) {
-            case "capacete" -> EnumWrappers.ItemSlot.HEAD;
+            case "capa" -> EnumWrappers.ItemSlot.HEAD;
             case "peito" -> EnumWrappers.ItemSlot.CHEST;
             case "calça" -> EnumWrappers.ItemSlot.LEGS;
             case "bota" -> EnumWrappers.ItemSlot.FEET;
@@ -32,6 +34,7 @@ public class HideCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) return false;
+
         if (args.length < 1) {
             sender.sendMessage("§cUse /esconder <parte|tudo>");
             return true;
@@ -46,21 +49,14 @@ public class HideCommand implements CommandExecutor {
         } else {
             EnumWrappers.ItemSlot slot = getSlot(args[0]);
             if (slot == null) {
-                sender.sendMessage("§cParte inválida. Use capacete, peito, calça, bota ou tudo.");
+                sender.sendMessage("§cParte inválida. Use capa, peito, calça, bota ou tudo.");
                 return true;
             }
             slots.add(slot);
         }
 
-        updatePlayer(player);
+        dadosManager.salvar(escondidas); // Salva os dados após o comando
         sender.sendMessage("§aParte(s) escondida(s) com sucesso!");
         return true;
-    }
-
-    private void updatePlayer(Player p) {
-        for (Player viewer : Bukkit.getOnlinePlayers()) {
-            viewer.hideEntity(plugin, p);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> viewer.showEntity(plugin, p), 2L);
-        }
     }
 }

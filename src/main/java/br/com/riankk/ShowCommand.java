@@ -12,10 +12,12 @@ public class ShowCommand implements CommandExecutor {
 
     private final Map<UUID, Set<EnumWrappers.ItemSlot>> escondidas;
     private final JavaPlugin plugin;
+    private final DadosManager dadosManager;
 
-    public ShowCommand(Map<UUID, Set<EnumWrappers.ItemSlot>> escondidas, JavaPlugin plugin) {
+    public ShowCommand(Map<UUID, Set<EnumWrappers.ItemSlot>> escondidas, JavaPlugin plugin, DadosManager dadosManager) {
         this.escondidas = escondidas;
         this.plugin = plugin;
+        this.dadosManager = dadosManager;
     }
 
     private EnumWrappers.ItemSlot getSlot(String arg) {
@@ -44,13 +46,14 @@ public class ShowCommand implements CommandExecutor {
         } else {
             EnumWrappers.ItemSlot slot = getSlot(args[0]);
             if (slot == null) {
-                sender.sendMessage("§cParte inválida. Use capacete, peito, calça, bota ou tudo.");
+                sender.sendMessage("§cParte inválida. Use capa, peito, calça, bota ou tudo.");
                 return true;
             }
             slots.remove(slot);
         }
 
-        // Atualiza a visualização pros outros jogadores
+        dadosManager.salvar(escondidas); // Salva os dados após o comando
+
         updatePlayer(player);
         sender.sendMessage("§aParte(s) mostrada(s) com sucesso!");
         return true;
