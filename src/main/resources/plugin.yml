@@ -1,0 +1,12 @@
+name: AmorPlungin
+version: '1.0-SNAPSHOT'
+main: br.com.riankk.InvisibleArmor
+api-version: '1.21'
+depend: [ProtocolLib]
+commands:
+  esconder:
+    description: Esconde parte da armadura
+    usage: /<command> <parte>
+  mostrar:
+    description: Mostra parte da armadura
+    usage: /<command> <parte>
